@@ -1,0 +1,66 @@
+<div class="container">
+  <h1>Submissão de Projetos</h1>
+  <a routerLink="/projetos/novo" class="novo">+ Novo projeto</a>
+
+  @if (feedback(); as f) {
+  <div class="alerta" [class.sucesso]="f.tipo === 'sucesso'" [class.erro-alerta]="f.tipo === 'erro'">
+    {{ f.texto }}
+    <button type="button" class="fechar" (click)="fecharFeedback()">×</button>
+  </div>
+}
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Título</th>
+        <th>Área</th>
+        <th>Nota Inovação</th>
+        <th>Nota Apresentação</th>
+        <th>Média Final</th>
+        <th>Status</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (p of projetos(); track p.id) {
+        <tr>
+          <td>{{ p.id }}</td>
+          <td>{{ p.titulo }}</td>
+          <td>{{ p.areaConhecimento }}</td>
+          <td>
+            <input #inovacao type="number" min="0" max="10" step="0.1"
+                   [value]="p.notaInovacao ?? ''" />
+          </td>
+          <td>
+            <input #apresentacao type="number" min="0" max="10" step="0.1"
+                   [value]="p.notaApresentacao ?? ''" />
+          </td>
+          <td>{{ p.mediaFinal ?? '-' }}</td>
+          <td>
+            @if (p.status) {
+              <span class="status" [class.aprovado]="p.status === 'APROVADO'"
+                                   [class.revisar]="p.status === 'REVISAR'">
+                {{ p.status }}
+              </span>
+            } @else {
+              <span class="status pendente">SEM NOTA</span>
+            }
+          </td>
+          <td class="acoes">
+            <button class="avaliar"
+                    (click)="avaliar(p, inovacao.value, apresentacao.value)">
+              Avaliar 
+            </button>
+            <a [routerLink]="['/projetos/editar', p.id]" class="editar">Editar</a>
+            <button class="excluir" (click)="excluir(p)">Excluir</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="8" class="vazio">Nenhum projeto cadastrado.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

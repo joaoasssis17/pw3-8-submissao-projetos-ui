@@ -1,0 +1,49 @@
+<div class="container">
+  <h1>{{ editando ? 'Editar Projeto' : 'Novo Projeto' }}</h1>
+
+  @if (mensagem()) {
+    <div class="alerta" [class.sucesso]="tipoMensagem() === 'sucesso'"
+                        [class.erro]="tipoMensagem() === 'erro'">
+      {{ mensagem() }}
+    </div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="salvar()" novalidate>
+    <label for="titulo">Título</label>
+    <input id="titulo" type="text" formControlName="titulo"
+           [class.invalido]="invalido('titulo')" />
+    @if (invalido('titulo')) {
+      <small class="msg-erro">
+        @if (form.controls.titulo.hasError('required')) {
+          O título é obrigatório.
+        } @else if (form.controls.titulo.hasError('minlength')) {
+          O título precisa ter pelo menos 3 caracteres.
+        } @else if (form.controls.titulo.hasError('maxlength')) {
+          O título pode ter no máximo 100 caracteres.
+        }
+      </small>
+    }
+
+    <label for="area">Área de conhecimento</label>
+    <input id="area" type="text" formControlName="areaConhecimento"
+           [class.invalido]="invalido('areaConhecimento')" />
+    @if (invalido('areaConhecimento')) {
+      <small class="msg-erro">
+        @if (form.controls.areaConhecimento.hasError('required')) {
+          A área de conhecimento é obrigatória.
+        } @else if (form.controls.areaConhecimento.hasError('minlength')) {
+          A área precisa ter pelo menos 3 caracteres.
+        } @else if (form.controls.areaConhecimento.hasError('maxlength')) {
+          A área pode ter no máximo 60 caracteres.
+        }
+      </small>
+    }
+
+    <div class="botoes">
+      <button type="submit" class="salvar" [disabled]="salvando()">
+        {{ salvando() ? 'Salvando...' : (editando ? 'Atualizar' : 'Cadastrar') }}
+      </button>
+      <a routerLink="/projetos" class="cancelar">Cancelar</a>
+    </div>
+  </form>
+</div>
