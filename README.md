@@ -1,3 +1,6 @@
+nome : João Pedro Silva de Assis rm:241614
+nome : Guilherme  rm:241416 
+
 # Planejamento do Projeto Prático: Angular + Spring Boot
 
 ## 🅰️ Guia de Implementação no Angular
